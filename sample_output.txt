@@ -1,0 +1,25 @@
+Baseline before worksheet changes. Text after each prompt is user input.
+Run the program separately for each example.
+
+Equipment Loan Starter
+Enter checkout day (0 to 365): 10
+Checkout day: 10
+Due day: 17
+
+Equipment Loan Starter
+Enter checkout day (0 to 365): 0
+Checkout day: 0
+Due day: 7
+
+Equipment Loan Starter
+Enter checkout day (0 to 365): 365
+Checkout day: 365
+Due day: 372
+
+Equipment Loan Starter
+Enter checkout day (0 to 365): -1
+Error: checkout day must be between 0 and 365.
+
+Equipment Loan Starter
+Enter checkout day (0 to 365): abc
+Error: enter one whole-number day.
