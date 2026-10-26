@@ -3,7 +3,7 @@
 #include <string>
 
 // Day numbers are sequence numbers, not calendar dates.
-constexpr int LOAN_DAYS = 7;
+constexpr int LOAN_DAYS = 10;
 constexpr int FIRST_CHECKOUT_DAY = 0;
 constexpr int LAST_CHECKOUT_DAY = 365;
 
