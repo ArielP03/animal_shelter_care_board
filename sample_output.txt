@@ -1,25 +1,13 @@
-Baseline before worksheet changes. Text after each prompt is user input.
-Run the program separately for each example.
+Daily care checklists
+Maple (A-101, dog)
+  [ ] Dog care - Feeding: Use the staff-entered instructions on file.
+  [ ] Dog care - Enrichment: Use the staff-entered instructions on file.
+Juniper (A-102, cat)
+  [ ] Cat care - Feeding: Use the staff-entered instructions on file.
+  [ ] Cat care - Litter check: Use the staff-entered instructions on file.
 
-Equipment Loan Starter
-Enter checkout day (0 to 365): 10
-Checkout day: 10
-Due day: 17
-
-Equipment Loan Starter
-Enter checkout day (0 to 365): 0
-Checkout day: 0
-Due day: 7
-
-Equipment Loan Starter
-Enter checkout day (0 to 365): 365
-Checkout day: 365
-Due day: 372
-
-Equipment Loan Starter
-Enter checkout day (0 to 365): -1
-Error: checkout day must be between 0 and 365.
-
-Equipment Loan Starter
-Enter checkout day (0 to 365): abc
-Error: enter one whole-number day.
+Recording one completed task...
+Unfinished care
+  Maple (A-101): Enrichment
+  Juniper (A-102): Feeding
+  Juniper (A-102): Litter check

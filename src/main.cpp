@@ -1,54 +1,113 @@
+#include "care_board.h"
+
+#include <cstddef>
+#include <exception>
 #include <iostream>
-#include <sstream>
+#include <limits>
+#include <memory>
 #include <string>
-
-// Day numbers are sequence numbers, not calendar dates.
-constexpr int LOAN_DAYS = 10;
-constexpr int FIRST_CHECKOUT_DAY = 0;
-constexpr int LAST_CHECKOUT_DAY = 365;
-
-bool isValidCheckoutDay(int day) {
-    return day >= FIRST_CHECKOUT_DAY && day <= LAST_CHECKOUT_DAY;
-}
-
-int calculateDueDay(int checkoutDay, int loanDays) {
-    return checkoutDay + loanDays;
-}
-
-void printLoanSummary(int checkoutDay, int dueDay) {
-    std::cout << "Checkout day: " << checkoutDay << '\n';
-    std::cout << "Due day: " << dueDay << '\n';
-}
+#include <vector>
 
 int main() {
-    std::cout << "Equipment Loan Starter\n";
-    std::cout << "Enter checkout day (" << FIRST_CHECKOUT_DAY
-              << " to " << LAST_CHECKOUT_DAY << "): ";
+    CareBoard board;
+    int choice = 0;
 
-    std::string input;
-    if (!std::getline(std::cin, input)) {
-        std::cout << "Error: no input was received.\n";
-        return 1;
+    while (true) {
+        std::cout << "\nAnimal Shelter Care Board\n"
+                  << "1. Add animal\n"
+                  << "2. Generate daily checklists\n"
+                  << "3. Mark task complete\n"
+                  << "4. Print daily checklists\n"
+                  << "5. Print unfinished care\n"
+                  << "6. Exit\n"
+                  << "Choice: ";
+
+        if (!(std::cin >> choice)) {
+            if (std::cin.eof()) {
+                break;
+            }
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Enter a number from 1 to 6.\n";
+            continue;
+        }
+
+        try {
+            switch (choice) {
+                case 1: {
+                    std::string id;
+                    std::string name;
+                    std::string species;
+                    std::cout << "Enter ID, name, and species (dog/cat): ";
+                    if (!(std::cin >> id >> name >> species)) {
+                        return 1;
+                    }
+
+                    std::unique_ptr<CarePlan> plan;
+                    std::vector<CareInstruction> instructions;
+                    if (species == "dog" || species == "Dog") {
+                        plan = std::make_unique<DogCarePlan>();
+                        instructions = {
+                            {"Feeding", "Follow staff instructions."},
+                            {"Walk", "Follow staff instructions."}};
+                    } else if (species == "cat" || species == "Cat") {
+                        plan = std::make_unique<CatCarePlan>();
+                        instructions = {
+                            {"Feeding", "Follow staff instructions."},
+                            {"Litter check", "Follow staff instructions."}};
+                    } else {
+                        std::cout << "Species must be dog or cat.\n";
+                        break;
+                    }
+
+                    board.registerAnimal(AnimalRecord(
+                        id, name, species, std::move(plan), instructions));
+                    std::cout << "Animal added.\n";
+                    break;
+                }
+                case 2:
+                    board.generateDailyChecklists();
+                    std::cout << "Checklists generated.\n";
+                    break;
+                case 3: {
+                    std::string id;
+                    int taskNumber = 0;
+                    std::cout << "Enter animal ID and task number: ";
+                    if (!(std::cin >> id >> taskNumber)) {
+                        if (std::cin.eof()) {
+                            return 0;
+                        }
+                        std::cin.clear();
+                        std::cin.ignore(
+                            std::numeric_limits<std::streamsize>::max(), '\n');
+                        std::cout << "Enter an animal ID and a task number.\n";
+                        break;
+                    }
+
+                    if (taskNumber < 1) {
+                        std::cout << "Task number must be at least 1.\n";
+                        break;
+                    }
+                    board.markTaskComplete( id, static_cast<std::size_t>(taskNumber - 1));
+                    std::cout << "Task marked complete.\n";
+                    break;
+                }
+                case 4:
+                    board.printDailyChecklists();
+                    break;
+                case 5:
+                    board.printUnfinishedCare();
+                    break;
+                case 6:
+                    std::cout << "Goodbye.\n";
+                    return 0;
+                default:
+                    std::cout << "Choose a number from 1 to 6.\n";
+            }
+        } catch (const std::exception& error) {
+            std::cout << "Error: " << error.what() << '\n';
+        }
     }
 
-    std::istringstream parser(input);
-    int checkoutDay = 0;
-    char extra = '\0';
-
-    // Reject missing numbers and extra non-whitespace characters.
-    if (!(parser >> checkoutDay) || (parser >> extra)) {
-        std::cout << "Error: enter one whole-number day.\n";
-        return 1;
-    }
-
-    if (!isValidCheckoutDay(checkoutDay)) {
-        std::cout << "Error: checkout day must be between "
-                  << FIRST_CHECKOUT_DAY << " and "
-                  << LAST_CHECKOUT_DAY << ".\n";
-        return 1;
-    }
-
-    const int dueDay = calculateDueDay(checkoutDay, LOAN_DAYS);
-    printLoanSummary(checkoutDay, dueDay);
     return 0;
 }
