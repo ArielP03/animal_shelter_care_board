@@ -17,14 +17,12 @@ diagnoses, medication, or treatment.
 
 1. Register an animal with a unique ID, name, species, and staff-entered care
    instructions.
-2. Generate a daily checklist using the animal's selected care plan.
+2. Generate a daily checklist.
 3. Mark a checklist task complete and show which care remains unfinished.
 4. Search or filter animals by ID, name, or species.
 5. Save and load animal records and task status between program runs.
 6. Provide a GUI overview for volunteers to review animals and update tasks.
 
-Only a small part of features 1–3 is implemented in this starting console
-program. Search/filter, persistence, and GUI work are planned.
 
 ## Initial design
 
@@ -47,22 +45,13 @@ Console driver -> CareBoard -> AnimalRecord -> CarePlan
 
 ### Implemented in this checkpoint
 
-- `CareBoard` stores animals. Its public operations
-  `registerAnimal`, `generateDailyChecklists`, `markTaskComplete`,
-  `printDailyChecklists`, and `printUnfinishedCare` implement the starting
-  application workflow. It enforces non-empty and unique IDs and verifies that
-  a requested animal exists.
-- `AnimalRecord` contains its care plan, staff-entered instructions, and
-  generated tasks. Its `generateDailyChecklist` uses the plan, while
-  `markTaskComplete` validates the task index.
-- `CarePlan` is an abstract base class. Its pure virtual
-  `generateDailyTasks` function is called through the base-class pointer held
-  by `AnimalRecord`. `DogCarePlan` and `CatCarePlan` label their generated
-  tasks differently. The console example invokes this runtime dispatch while
-  generating both animals' daily checklists.
-- `CareTask` stores a category, task name, staff-entered details, and
-  completion status. The small console driver constructs two sample animals,
-  builds their checklists, completes one task, and lists remaining care.
+- **CareBoard:** stores animals. Its public operations 
+registerAnimal, generateDailyChecklists, markTaskComplete, printDailyChecklists, and printUnfinishedCare implement the starting application workflow. It enforces non-empty and unique IDs and verifies that a requested animal exists. 
+- **AnimalRecords:** keeps care plan. From here its generated generateDailyChecklist and markTaskComplete update task to complete. 
+- **CarePlan:** is an abstract base class. It's virtual generateDailyTasks function that is called through the base-class pointer held by AnimalRecord. 
+- **DogCare and CatCare:** they are labels that generate their own tasks. 
+- **CareTask:** stores a category, task name, staff-entered details, and 
+completion status.
 
 ### Planned, not implemented
 
@@ -97,10 +86,10 @@ Console driver -> CareBoard -> AnimalRecord -> CarePlan
 
 ## Build and run
 
-**Operating system:** macOS  
-**Compiler:** Apple Clang from Xcode Command Line Tools (`c++`)  
-**C++ standard:** C++17  
-**Dependencies:** None beyond the C++ standard library.
+**Operating system:** macOS or Windows
+**Compiler:** Apple Clang from Xcode Command Line Tools (`c++`)  or VS Community
+**C++ standard:** C++20 
+**Dependencies:** C++ standard library.
 
 From the repository root, run:
 
@@ -114,28 +103,4 @@ c++ -std=c++17 -Wall -Wextra -pedantic -Iinclude \
 
 If Command Line Tools are already installed, the first command is unnecessary.
 The `build/` directory and executable are generated locally and should not be
-committed.
-
-## Team checkpoint record
-
-Complete these team-specific fields before submission:
-
-- **Team name:** [add team name]
-- **Members (GitHub usernames):** [add each member]
-- **Checkpoint coordinator:** [add coordinator]
-- **Shared repository URL:** [add repository URL]
-- **Exact checkpoint commit:** [add commit permalink]
-- **Instructor, TA, and assigned reviewers have repository access:** [confirm]
-
-Record each member's work using the required evidence table:
-
-| Member | Own commit and change | Teammate update checked | Build result and setup correction |
-|---|---|---|---|
-| [name] | [commit link and change] | [commit link and what changed] | [result and correction, or "worked as written"] |
-
-Use the October 21 worksheet evidence where it satisfies these checks. Do not
-claim a teammate update was tested unless the member actually built it.
-
-## Checkpoint sample
-
-The sample output is in [`sample_output.txt`](sample_output.txt).
+committed.o 
