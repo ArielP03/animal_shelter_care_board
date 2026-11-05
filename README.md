@@ -91,6 +91,22 @@ completion status.
 **C++ standard:** C++20 
 **Dependencies:** C++ standard library.
 
+### Visual Studio Community on Windows
+
+Install the **Desktop development with C++** workload, then open the repository
+folder in Visual Studio. Visual Studio will detect `CMakeLists.txt` and
+`CMakePresets.json`. Select the `windows-debug` preset and build the
+`animal_shelter_care_board` target. The executable will be created under
+`out/build/windows-debug/`.
+
+The same build can be performed from a Developer PowerShell for Visual Studio:
+
+```powershell
+cmake --preset windows-debug
+cmake --build --preset windows-debug
+.\out\build\windows-debug\animal_shelter_care_board.exe
+```
+
 From the repository root, run:
 
 ```sh
