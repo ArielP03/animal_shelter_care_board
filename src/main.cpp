@@ -1,10 +1,10 @@
 #include "care_board.h"
-
 #include <cstddef>
 #include <exception>
 #include <iostream>
 #include <limits>
 #include <memory>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -72,26 +72,50 @@ int main() {
 
 
                 case 3: {
-                    int id;
-                    int taskNumber = 0;
-                    std::cout << "Enter animal ID and task number: ";
-                    if (!(std::cin >> id >> taskNumber)) {
-                        if (std::cin.eof()) {
+                    std::cin.ignore(
+                        std::numeric_limits<std::streamsize>::max(), '\n');
+                    while (true) {
+                        std::string input;
+                        std::string id;
+                        std::string extra;
+                        int taskNumber = 0;
+                        std::cout << "Enter animal ID and task number "
+                                     "(or enter 0 alone to return to the menu): ";
+                        if (!std::getline(std::cin, input)) {
                             return 0;
                         }
-                        std::cin.clear();
-                        std::cin.ignore(
-                            std::numeric_limits<std::streamsize>::max(), '\n');
-                        std::cout << "Enter an animal ID and a task number.\n";
-                        break;
-                    }
 
-                    if (taskNumber < 1) {
-                        std::cout << "Task number must be at least 1.\n";
-                        break;
+                        std::istringstream inputStream(input);
+                        if (!(inputStream >> id)) {
+                            std::cout << "Enter an animal ID and a task number.\n";
+                            continue;
+                        }
+                        if (id == "0" && !(inputStream >> extra)) {
+                            std::cout << "Returning to the main menu.\n";
+                            break;
+                        }
+                        if (!(inputStream >> taskNumber) ||
+                            (inputStream >> extra)) {
+                            std::cout << "Task number must be a whole number. "
+                                         "Enter an animal ID and one task number.\n";
+                            continue;
+                        }
+                        if (taskNumber < 1) {
+                            std::cout << "Task number must be at least 1.\n";
+                            continue;
+                        }
+
+                        try {
+                            board.markTaskComplete(
+                                id, static_cast<std::size_t>(taskNumber - 1));
+                            std::cout << "Task marked complete.\n";
+                            break;
+                        } catch (const std::exception& error) {
+                            std::cout << "Error: " << error.what()
+                                      << " Please try again or enter 0 to return "
+                                         "to the main menu.\n";
+                        }
                     }
-                    board.markTaskComplete( std::to_string(id), static_cast<std::size_t>(taskNumber - 1));
-                    std::cout << "Task marked complete.\n";
                     break;
                 }
                 case 4:
