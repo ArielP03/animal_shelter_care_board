@@ -69,8 +69,10 @@ int main() {
                     board.generateDailyChecklists();
                     std::cout << "Checklists generated.\n";
                     break;
+
+
                 case 3: {
-                    std::string id;
+                    int id;
                     int taskNumber = 0;
                     std::cout << "Enter animal ID and task number: ";
                     if (!(std::cin >> id >> taskNumber)) {
@@ -88,7 +90,7 @@ int main() {
                         std::cout << "Task number must be at least 1.\n";
                         break;
                     }
-                    board.markTaskComplete( id, static_cast<std::size_t>(taskNumber - 1));
+                    board.markTaskComplete( std::to_string(id), static_cast<std::size_t>(taskNumber - 1));
                     std::cout << "Task marked complete.\n";
                     break;
                 }
