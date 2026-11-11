@@ -12,7 +12,8 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/out/build/${presetName}",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug"
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       }
     },
     {
@@ -21,7 +22,30 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/out/build/${presetName}",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release"
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+    {
+      "name": "macos-qt-debug",
+      "displayName": "macOS Qt Debug",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_PREFIX_PATH": "/opt/homebrew/opt/qt@6;${sourceDir}"
+      }
+    },
+    {
+      "name": "macos-qt-release",
+      "displayName": "macOS Qt Release",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_PREFIX_PATH": "/opt/homebrew/opt/qt@6;${sourceDir}"
       }
     }
   ],
@@ -33,6 +57,14 @@
     {
       "name": "windows-release",
       "configurePreset": "windows-release"
+    },
+    {
+      "name": "macos-qt-debug",
+      "configurePreset": "macos-qt-debug"
+    },
+    {
+      "name": "macos-qt-release",
+      "configurePreset": "macos-qt-release"
     }
   ]
 }

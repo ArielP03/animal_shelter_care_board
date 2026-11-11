@@ -65,6 +65,7 @@ public:
     void registerAnimal(AnimalRecord animal);
     void generateDailyChecklists();
     void markTaskComplete(const std::string& animalId, std::size_t taskIndex);
+    const std::vector<AnimalRecord>& animals() const;
     void printDailyChecklists() const;
     void printUnfinishedCare() const;
 

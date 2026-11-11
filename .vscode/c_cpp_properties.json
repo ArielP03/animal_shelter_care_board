@@ -3,14 +3,20 @@
     {
       "name": "macos-clang-arm64",
       "includePath": [
-        "${workspaceFolder}/**"
+        "${workspaceFolder}/**",
+        "/opt/homebrew/opt/qt@6/lib/QtCore.framework/Headers",
+        "/opt/homebrew/opt/qt@6/lib/QtGui.framework/Headers",
+        "/opt/homebrew/opt/qt@6/lib/QtWidgets.framework/Headers",
+        "/opt/homebrew/opt/qt@6/include",
+        "/opt/homebrew/include"
       ],
+      "compileCommands": "${workspaceFolder}/build/compile_commands.json",
       "compilerPath": "/usr/bin/clang",
       "cStandard": "${default}",
       "cppStandard": "${default}",
       "intelliSenseMode": "macos-clang-arm64",
       "compilerArgs": [
-        ""
+        "-F/opt/homebrew/opt/qt@6/lib"
       ]
     }
   ],

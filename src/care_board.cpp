@@ -102,6 +102,10 @@ void CareBoard::markTaskComplete(const std::string& animalId,
     throw std::invalid_argument("Animal ID was not found.");
 }
 
+const std::vector<AnimalRecord>& CareBoard::animals() const {
+    return animals_;
+}
+
 void CareBoard::printDailyChecklists() const {
     std::cout << "Daily care checklists\n";
     for (const AnimalRecord& animal : animals_) {

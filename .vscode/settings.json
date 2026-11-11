@@ -35,9 +35,18 @@
   ],
   "C_Cpp_Runner.enableWarnings": true,
   "C_Cpp_Runner.warningsAsError": false,
-  "C_Cpp_Runner.compilerArgs": [],
-  "C_Cpp_Runner.linkerArgs": [],
-  "C_Cpp_Runner.includePaths": [],
+  "C_Cpp_Runner.compilerArgs": [
+    "-F/opt/homebrew/opt/qt@6/lib"
+  ],
+  "C_Cpp_Runner.linkerArgs": [
+    "-F/opt/homebrew/opt/qt@6/lib"
+  ],
+  "C_Cpp_Runner.includePaths": [
+    "/opt/homebrew/opt/qt@6/include",
+    "/opt/homebrew/opt/qt@6/lib/QtCore.framework/Headers",
+    "/opt/homebrew/opt/qt@6/lib/QtGui.framework/Headers",
+    "/opt/homebrew/opt/qt@6/lib/QtWidgets.framework/Headers"
+  ],
   "C_Cpp_Runner.includeSearch": [
     "*",
     "**/*"
@@ -55,5 +64,9 @@
   "C_Cpp_Runner.useLeakSanitizer": false,
   "C_Cpp_Runner.showCompilationTime": false,
   "C_Cpp_Runner.useLinkTimeOptimization": false,
-  "C_Cpp_Runner.msvcSecureNoWarnings": false
+  "C_Cpp_Runner.msvcSecureNoWarnings": false,
+  "cmake.configureArgs": [
+    "-DCMAKE_PREFIX_PATH=/opt/homebrew/opt/qt@6",
+    "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+  ]
 }

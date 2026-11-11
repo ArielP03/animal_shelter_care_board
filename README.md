@@ -52,6 +52,9 @@ registerAnimal, generateDailyChecklists, markTaskComplete, printDailyChecklists,
 - **DogCare and CatCare:** they are labels that generate their own tasks. 
 - **CareTask:** stores a category, task name, staff-entered details, and 
 completion status.
+- **Qt GUI:** the main application window adds animals, generates checklists,
+  displays tasks and completion status, and marks selected tasks complete
+  through the existing `CareBoard` operations.
 
 ### Planned, not implemented
 
@@ -62,16 +65,8 @@ completion status.
   serialize and restore animal records, staff instructions, and task status.
   The application layer will pass data to/from this module; persistence is
   not implemented yet.
-- **GUI interactions:** a planned GUI view/controller will display animals,
-  checklists, and unfinished care. User actions will call `CareBoard`
-  operations, with results shown by the GUI; no GUI is implemented or
-  required for this checkpoint.
-- **GUI concept:** a home screen will show an animal list and unfinished-task
-  count. Selecting an animal opens its record and checklist; a task control
-  marks an item complete. A separate form will add animals and staff-entered
-  instructions. GUI event handlers will validate basic input and call the
-  same `CareBoard` operations as other interfaces rather than containing
-  application rules.
+- **Future GUI improvements:** enter custom staff instructions in the GUI,
+  search/filter animals, and save/load records between runs.
 - **Error handling:** reject missing animal IDs/names and duplicate IDs;
   report unknown animal IDs and invalid task indexes instead of silently
   ignoring requests. The starter throws standard exceptions for these
@@ -89,14 +84,14 @@ completion status.
 **Operating system:** macOS or Windows
 **Compiler:** Apple Clang from Xcode Command Line Tools (`c++`)  or VS Community
 **C++ standard:** C++20 
-**Dependencies:** C++ standard library.
+**Dependencies:** C++ standard library and Qt 6 Widgets.
 
 ### Visual Studio Community on Windows
 
 Install the **Desktop development with C++** workload, then open the repository
 folder in Visual Studio. Visual Studio will detect `CMakeLists.txt` and
-`CMakePresets.json`. Select the `windows-debug` preset and build the
-`animal_shelter_care_board` target. The executable will be created under
+`CMakePresets.json`. Install Qt 6 for your compiler, select the `windows-debug` preset, and build
+the `animal_shelter_care_board` target. The executable will be created under
 `out/build/windows-debug/`.
 
 The same build can be performed from a Developer PowerShell for Visual Studio:
@@ -107,16 +102,27 @@ cmake --build --preset windows-debug
 .\out\build\windows-debug\animal_shelter_care_board.exe
 ```
 
-From the repository root, run:
+### Qt GUI build and run
+
+The Qt interface is implemented in `src/main.cpp` and uses the existing
+`CareBoard` classes. On macOS with Homebrew, install CMake and Qt 6:
 
 ```sh
-xcode-select --install
-mkdir -p build
-c++ -std=c++17 -Wall -Wextra -pedantic -Iinclude \
-  src/care_board.cpp src/main.cpp -o build/care_board
-./build/care_board
+brew install cmake
+brew install qt@6
 ```
 
-If Command Line Tools are already installed, the first command is unnecessary.
+Then configure the project from the repository root:
+
+```sh
+export PATH="/opt/homebrew/bin:$PATH"
+cmake -S . -B build -DCMAKE_PREFIX_PATH=/opt/homebrew/opt/qt@6
+cmake --build build --target animal_shelter_care_board
+./build/animal_shelter_care_board
+```
+
+On Intel Macs, the Qt prefix is usually `/usr/local/opt/qt@6` instead of
+`/opt/homebrew/opt/qt@6`.
+
 The `build/` directory and executable are generated locally and should not be
-committed.o 
+committed.
