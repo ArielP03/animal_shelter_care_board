@@ -69,3 +69,6 @@ Testing/
 .cache/
 
 .vs/
+
+# Local CMake Settings
+/CMakeUserPresets.json

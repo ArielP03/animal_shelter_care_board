@@ -227,9 +227,16 @@ int main(int argc, char* argv[]) {
                      [navigateTo, addAnimalPage]() {
                          navigateTo(addAnimalPage.first);
                      });
-    QObject::connect(generateMenuButton, &QPushButton::clicked, &window,
-                     [ &window](
-                     ) {QMessageBox::information(&window, "","List generated");});
+    QObject::connect(generateMenuButton, &QPushButton::clicked, &window, [&]() {
+        board.generateDailyChecklists();
+
+        populateTaskTable(checklistTable, false, false);
+        populateTaskTable(completeTable, false, true);
+        populateTaskTable(unfinishedTable, true, false);
+
+        QMessageBox::information(
+            &window, "Checklists", "Daily checklists generated.");
+        });
     QObject::connect(checklistMenuButton, &QPushButton::clicked, &window,
                      [navigateTo, checklistPage, &populateTaskTable,
                       checklistTable]() {
