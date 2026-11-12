@@ -126,3 +126,68 @@ On Intel Macs, the Qt prefix is usually `/usr/local/opt/qt@6` instead of
 
 The `build/` directory and executable are generated locally and should not be
 committed.
+
+### Windows with Visual Studio Community
+
+The Windows GUI was tested with Qt Widgets 6.8.3 using the
+MSVC 2022 64-bit Qt package.
+
+1. Install Visual Studio Community with the **Desktop development with C++**
+   workload.
+2. Install Qt 6.8.3 and select **MSVC 2022 64-bit**.
+3. In Visual Studio, choose **File > Open > Folder** and open the repository
+   folder containing `CMakeLists.txt`.
+4. Create `CMakeUserPresets.json` beside `CMakePresets.json` with:
+
+```json
+{
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "windows-qt-local",
+      "displayName": "Windows Qt Local",
+      "inherits": "windows-debug",
+      "cacheVariables": {
+        "CMAKE_PREFIX_PATH": "C:/Qt/6.8.3/msvc2022_64"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "windows-qt-local",
+      "configurePreset": "windows-qt-local"
+    }
+  ]
+}
+```
+
+If Qt is installed elsewhere, change `CMAKE_PREFIX_PATH` to match.
+
+5. Ensure `.gitignore` contains this line:
+
+```gitignore
+/CMakeUserPresets.json
+```
+
+6. Select **Windows Qt Local** in Visual Studio's configuration dropdown.
+   Wait for CMake configuration to finish.
+7. Build the `animal_shelter_care_board` target.
+8. Select `animal_shelter_care_board.exe` as the startup target and run it.
+
+#### Qt DLLs during local development
+
+If Windows reports that `Qt6Widgetsd.dll` cannot be found, add this folder
+to your Windows user `Path`:
+
+```text
+C:\Qt\6.8.3\msvc2022_64\bin
+```
+
+Close and reopen Visual Studio after changing `Path`.
+
+The Qt installation, user `Path`, and `CMakeUserPresets.json` are local
+settings. Each Windows computer needs its own setup.
+
+Do not commit generated build folders, executables, or Qt DLLs.
+
+
