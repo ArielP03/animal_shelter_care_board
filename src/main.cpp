@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
 
     auto* pages = new QStackedWidget(&window);
     window.setCentralWidget(pages);
-
+// making pages
     const auto makePage = [pages](const QString& title) {
         auto* page = new QWidget();
         auto* layout = new QVBoxLayout(page);
@@ -89,7 +89,7 @@ int main(int argc, char* argv[]) {
     unfinishedPage.second->addWidget(unfinishedTable);
 
     pages->addWidget(homePage);
-
+//table set up
     const auto configureTaskTable = [](QTableWidget* table) {
         table->setColumnCount(6);
         table->setHorizontalHeaderLabels(
@@ -103,7 +103,7 @@ int main(int argc, char* argv[]) {
     configureTaskTable(checklistTable);
     configureTaskTable(completeTable);
     configureTaskTable(unfinishedTable);
-
+// populate table with tasks
     const auto populateTaskTable = [&board](QTableWidget* table,
                                             bool unfinishedOnly,
                                             bool selectableTasks) {
@@ -161,7 +161,7 @@ int main(int argc, char* argv[]) {
             table->setSpan(row, 0, 1, table->columnCount());
         }
     };
-
+//back button and style
     const auto addBackButton = [&pages, homePage](
                                    QVBoxLayout* layout) {
         auto* backButton = new QPushButton("Back to menu");
@@ -191,7 +191,7 @@ int main(int argc, char* argv[]) {
     const auto navigateTo = [pages](QWidget* page) {
         pages->setCurrentWidget(page);
     };
-
+//button styles
     const auto addMenuButton = [homeLayout](const QString& title) {
         auto* button = new QPushButton(title);
         button->setMinimumHeight(48);
@@ -211,7 +211,7 @@ int main(int argc, char* argv[]) {
         homeLayout->setAlignment(Qt::AlignCenter);
         return button;
     };
-
+// menu buttons
     auto* addMenuButtonWidget = addMenuButton("Add an animal");
     auto* generateMenuButton = addMenuButton("Generate daily checklists");
     auto* checklistMenuButton = addMenuButton("View daily checklists");
@@ -222,11 +222,12 @@ int main(int argc, char* argv[]) {
     auto* homeStatus = new QLabel();
     homeLayout->addWidget(homeStatus);
     homeLayout->addStretch();
-
+//add animal button
     QObject::connect(addMenuButtonWidget, &QPushButton::clicked, &window,
                      [navigateTo, addAnimalPage]() {
                          navigateTo(addAnimalPage.first);
                      });
+      // generate checklist button
     QObject::connect(generateMenuButton, &QPushButton::clicked, &window, [&]() {
         board.generateDailyChecklists();
 
@@ -237,27 +238,31 @@ int main(int argc, char* argv[]) {
         QMessageBox::information(
             &window, "Checklists", "Daily checklists generated.");
         });
+        // checklist button
     QObject::connect(checklistMenuButton, &QPushButton::clicked, &window,
                      [navigateTo, checklistPage, &populateTaskTable,
                       checklistTable]() {
                          populateTaskTable(checklistTable, false, false);
                          navigateTo(checklistPage.first);
                      });
+     // complete task button
     QObject::connect(completeMenuButton, &QPushButton::clicked, &window,
                      [navigateTo, completePage, &populateTaskTable,
                       completeTable]() {
                          populateTaskTable(completeTable, false, true);
                          navigateTo(completePage.first);
                      });
+    // unfinished care button
     QObject::connect(unfinishedMenuButton, &QPushButton::clicked, &window,
                      [navigateTo, unfinishedPage, &populateTaskTable,
                       unfinishedTable]() {
                          populateTaskTable(unfinishedTable, true, false);
                          navigateTo(unfinishedPage.first);
                      });
+    //exit button
     QObject::connect(exitButton, &QPushButton::clicked, &window,
                      &QMainWindow::close);
-
+//add animal connections
     QObject::connect(saveAnimalButton, &QPushButton::clicked, &window, [&]() {
         const QString id = idInput->text().trimmed();
         const QString name = nameInput->text().trimmed();
@@ -295,7 +300,7 @@ int main(int argc, char* argv[]) {
                                  QString::fromUtf8(error.what()));
         }
     });
-
+//task generation
     QObject::connect(generateButton, &QPushButton::clicked, &window, [&]() {
         board.generateDailyChecklists();
         populateTaskTable(checklistTable, false, false);
@@ -303,7 +308,7 @@ int main(int argc, char* argv[]) {
         populateTaskTable(unfinishedTable, true, false);
         generateStatus->setText("Daily checklists generated.");
     });
-
+//task completion connections
     QObject::connect(completeButton, &QPushButton::clicked, &window, [&]() {
         const int selectedRow = completeTable->currentRow();
         auto* selectedItem =
